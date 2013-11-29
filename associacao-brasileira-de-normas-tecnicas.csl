@@ -39,7 +39,7 @@
     <category citation-format="author-date"/>
     <category field="generic-base"/>
     <summary>The Brazilian Standard Style in accordance with ABNT-NBR 10520.2002 and ABNT-NBR 6023.2002</summary>
-    <updated>2013-05-01T03:53:13+00:00</updated>
+    <updated>2013-11-2917:50:00-03:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="pt-BR">
@@ -57,7 +57,7 @@
       <term name="month-10" form="short">out.</term>
       <term name="month-11" form="short">nov.</term>
       <term name="month-12" form="short">dez.</term>
-      <!--Os termos abaixo serao utilizados quando houverem nomes de editores. Apos a citacao dos nomes, eles irao aparecer entre parenteses.-->
+      <!--Os termos abaixo serao utilizados quando houver nomes de editores. Apos a citacao dos nomes, eles irao aparecer entre parenteses.-->
       <term name="editor" form="short">
         <single>ed</single>
         <multiple>eds</multiple>
@@ -372,7 +372,7 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
   </macro>
   <!--Citacao-->
   <!--et al. aparece a partir de 04 autores-->
-  <citation et-al-min="4" et-al-use-first="1" et-al-subsequent-min="4" et-al-subsequent-use-first="1" collapse="year">
+  <citation et-al-min="4" et-al-use-first="1" et-al-subsequent-min="4" et-al-subsequent-use-first="1" collapse="year"  disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="true" givenname-disambiguation-rule="all-names">
     <sort>
       <key macro="author"/>
       <!--Puxa o autor primeiro-->
@@ -391,7 +391,7 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
   </citation>
   <!--Bibliografia-->
   <!--et al. aparece a partir de 04 autores-->
-  <bibliography hanging-indent="false" et-al-min="4" et-al-use-first="1" entry-spacing="1">
+  <bibliography hanging-indent="false" et-al-min="4" et-al-use-first="1" entry-spacing="1" subsequent-author-substitute="_____." subsequent-author-substitute-rule="complete-all">
     <sort>
       <key macro="author"/>
       <!--Puxa o autor primeiro-->
