@@ -127,10 +127,12 @@ aparecera a expess o 'et. al.'. Na regra da ABNT essa expressao deve aparecer em
       <substitute>
         <names variable="editor"/>
         <names variable="translator"/>
-        <!-- "IF" Evita duplicação de títulos em audiovisuais sem autor -->
-        <if match="none" type="motion_picture broadcast">
-          <text macro="title" /> 
-        </if>
+        <choose>
+          <!-- "IF" Evita duplicação de títulos em audiovisuais sem autor -->
+          <if match="none" type="motion_picture broadcast">
+            <text macro="title" /> 
+          </if>
+        </choose>
       </substitute>
     </names>
   </macro>
@@ -180,23 +182,21 @@ autores, exceto em arquivos do tipo 'artigo de jornal, artigo de revista, artigo
       </else>
     </choose>
   </macro>
- <!-- Titulo dos Anais-->
+ <!-- Titulo de conteiner -->
   <macro name="container-title">
     <choose>
-      <if type="paper-conference" match="any">
-        <text variable="container-title" suffix=". "/>
-        <text value="Anais" font-weight="bold"/>
-        <text value="..."/>
+      <if type="paper-conference speech" match="any">
+        <text variable="container-title"  text-case="sentence" />
       </if>
       <else>
-        <text variable="container-title" font-weight="bold"/>
+        <text variable="container-title" font-weight="bold" />
       </else>
     </choose>
   </macro>
   <!--A macro 'publisher' mostra lugar, editora e data. Artigos devem colocar o lugar no campo "Extra" do Zotero (note) -->
   <macro name="publisher">
     <choose>
-      <if match="any" variable="publisher-place publisher issued">
+      <if match="any" variable="publisher-place publisher issued note">
         <choose>
           <if variable="publisher-place">
             <text variable="publisher-place" suffix=": " />
@@ -210,7 +210,19 @@ autores, exceto em arquivos do tipo 'artigo de jornal, artigo de revista, artigo
             <text variable="publisher" suffix=", " />
           </if>
           <else>
-            <text value="[s.n.]" suffix=", " />
+            <!-- Em palestra (speech), colocar promotor no campo "Extra"-->
+            <choose>
+              <if match="any" type="speech">
+                <choose>
+                  <if variable="note">
+                    <text macro="extra" suffix=", " />
+                  </if>
+                </choose>
+              </if>
+              <else>
+                <text value="[s.n.]" suffix=", " />
+              </else>
+            </choose>
           </else>
         </choose>
         <choose>
@@ -233,20 +245,47 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
     <choose>
       <if variable="event">
         <choose>
-          <if variable="genre" match="none">
-            <text term="in" text-case="capitalize-first" suffix=": "/>
-            <text variable="event" text-case="uppercase"/>
+          <!-- paper-conference -->
+          <if type="paper-conference" match="any">
+            <group delimiter=", " suffix=". ">
+              <group>
+                <text term="in" font-style="italic" text-case="capitalize-first" suffix=": " />
+                <text variable="event" text-case="uppercase" />
+              </group>
+              <choose>
+                <if variable="collection-title">
+                  <text variable="collection-title" suffix=". "/>
+                </if>
+              </choose>
+              <text macro="issued-year" />
+                <choose>
+                  <if variable="publisher-place">
+                    <text variable="publisher-place"  />
+                  </if>
+                  <else>
+                    <text prefix=", " value="[S.l.] " />
+                  </else>
+                </choose>
+            </group>
+            <text value="Anais" font-weight="bold" />
+              <choose>
+                <if variable="URL">
+                  <text value=" eletrônicos" font-weight="bold" />
+                </if>
+              </choose>
+            <text value="..." />
           </if>
+          <!-- speech -->
           <else>
-            <group delimiter=" ">
-              <text variable="genre" text-case="capitalize-first"/>
-              <text term="presented at"/>
-              <text variable="event"/>
+            <group suffix=". ">
+              <text term="in" font-style="italic" text-case="capitalize-first" suffix=": " /> <!-- "presented at" -->
+              <text variable="event" text-case="uppercase"  suffix=". " />
+              <text variable="genre" text-case="capitalize-first" suffix=". "  />
             </group>
           </else>
         </choose>
       </if>
-    </choose>
+      </choose>
   </macro>
   <!--A macro 'issued' e utilizada quando devemos mostrar a data completa exemplo: 03 mar. 2011.-->
   <macro name="issued">
@@ -330,7 +369,7 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
         </group>
       </else-if>
       <!--Se for capitulo de livro aparecera o volume "v." e a pagina "p."-->
-      <else-if match="any" type="book chapter">
+      <else-if match="any" type="book chapter paper-conference speech" >
         <group delimiter=", ">
           <text variable="volume" prefix="v. "/>
           <text variable="page" prefix="p. "/>
@@ -354,6 +393,15 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
   </macro>
   <macro name="genre">
     <text variable="genre"/>
+  </macro>
+  <!-- Anotações (campo "extra") -->
+  <macro name="extra">
+    <choose>
+      <!-- speech usa campo Extra para instituição ou editor -->
+      <if type="speech" match="none">
+        <text variable="note" />
+      </if>
+    </choose>
   </macro>
   <macro name="citation-locator">
     <group>
@@ -599,31 +647,31 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
             <!--Data-->
           </group>
         </else-if>
-        <else-if type="paper-conference">
-          <text macro="author" suffix=". "/>
-          <!--Autor-->
-          <text macro="title"/>
-          <!--Titulo-->
-          <text macro="container-contributors"/>
-          <!--Nomes de editore-->
-          <text macro="secondary-contributors"/>
-          <text macro="container-title"/>
-          <!--Titulo da publicacao-->
-          <text variable="collection-title" prefix=": " suffix="."/>
-          <text macro="locators"/>
-          <!--Dados complementares "pagina, volume"-->
-          <group delimiter=". " prefix=". " suffix=". ">
-            <text macro="event"/>
-            <!--Nome do evento, conferencia-->
+        <!-- Zotero tipo "Conferência" == tipo CSL "paper-conference"
+        e tipo "Apresentação" == tipo CSL "speech" (que tem campo CSL "genre") -->
+        <else-if  match="any" type="paper-conference speech">
+          <group delimiter=". " suffix=". " >
+            <!--Autor-->
+            <text macro="author" />
+            <!--Titulo-->
+            <text macro="title" />
+            <!--Nomes de editores-->
+            <text macro="container-contributors" />
+            <text macro="secondary-contributors" />
+            <!--Titulo da publicacao-->
+            <group delimiter=" " suffix="" >
+              <!--Nome do evento, conferencia-->
+              <text macro="event" />
+              <!--Editor-->
+              <text macro="publisher" />
+            </group>
+            <!--Dados complementares "pagina, volume"-->
+            <text macro="locators" />
+            <!--URL, data do acesso-->
+            <text macro="access" />
+            <!-- Extra field -->
+            <text macro="extra" />
           </group>
-          <text variable="publisher-place" suffix=": "/>
-          <!--Local-->
-          <text variable="publisher" suffix=", "/>
-          <!--Editor-->
-          <text macro="issued"/>
-          <!--Data-->
-          <text macro="access"/>
-          <!--URL, data do acesso-->
         </else-if>
         <!-- Filmes e vídeos. Imperfeito. Só inclui diretor. Necessita mais trabalho -->
         <else-if match="any" type="motion_picture broadcast">
