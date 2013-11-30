@@ -430,19 +430,19 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
         </else-if>
         <!--Livro-->
         <else-if type="book">
-          <group>
-            <text macro="author" suffix=". "/>
+          <group delimiter=". " suffix=". ">
             <!--autor-->
-            <text macro="title" suffix=". "/>
+            <text macro="author"/>
             <!--Titulo-->
-            <text macro="translator" suffix=". "/>
+            <text macro="title"/>
             <!--Traducao-->
-            <text macro="edition" suffix=". "/>
+            <text macro="translator"/>
             <!--Edicao-->
-            <text macro="publisher" suffix=". "/>
+            <text macro="edition"/>
             <!--Local, data, etc-->
-            <text macro="locators"/>
+            <text macro="publisher"/>
             <!--Dados complementares "pagina, volume"-->
+            <text macro="locators"/>
           </group>
         </else-if>
         <!--Capítulo-->
