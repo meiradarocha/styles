@@ -625,6 +625,39 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
           <text macro="access"/>
           <!--URL, data do acesso-->
         </else-if>
+        <!-- Filmes e vídeos. Imperfeito. Só inclui diretor. Necessita mais trabalho -->
+        <else-if match="any" type="motion_picture broadcast">
+          <group delimiter=". " suffix=". " >
+            <!--Titulo-->
+            <text macro="title" /> 
+            <!--Autor-->
+            <text macro="author" /> 
+            <!--Nomes de editore-->
+            <text macro="container-contributors" /> 
+            <text macro="secondary-contributors" />
+            <!-- Local, editor, data -->
+            <group>
+              <!-- Campo Extra deve conter o local de produção -->
+              <text macro="extra" suffix=": " />
+              <!-- distribuidor ou produtor -->
+              <text variable="publisher" suffix=", " />
+              <!--Data-->
+              <text macro="issued" />
+            </group>
+            <text variable="collection-title" font-weight="bold" />
+            <!-- Suporte -->
+            <text variable="medium" />
+            <!-- tipo, gênero -->
+            <text variable="genre" />
+            <!--Dados complementares "pagina, volume"-->
+            <text macro="locators" />
+            <!--Nome do evento, conferencia-->
+            <text macro="event" />
+            <!--URL, data do acesso-->
+            <text macro="access" />
+          </group>
+        </else-if>
+        <!-- Qualquer outra referência -->
         <else>
           <text macro="author" suffix=". "/>
           <!--Autor-->
