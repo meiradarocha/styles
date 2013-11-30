@@ -193,32 +193,37 @@ autores, exceto em arquivos do tipo 'artigo de jornal, artigo de revista, artigo
       </else>
     </choose>
   </macro>
-  <!--A macro 'publisher' e responsavel por mostrar o nome da editora responsavel pela publicacao-->
+  <!--A macro 'publisher' mostra lugar, editora e data. Artigos devem colocar o lugar no campo "Extra" do Zotero (note) -->
   <macro name="publisher">
     <choose>
-      <if match="any" variable="publisher-place publisher">
+      <if match="any" variable="publisher-place publisher issued">
         <choose>
           <if variable="publisher-place">
-            <text variable="publisher-place" suffix=": "/>
+            <text variable="publisher-place" suffix=": " />
           </if>
-          <else-if type="entry-encyclopedia">
-        </else-if>
           <else>
-            <text value="[s.l.] "/>
+            <text value="[S.l.]: " />
           </else>
         </choose>
         <choose>
           <if variable="publisher">
-            <text variable="publisher" suffix=", "/>
-            <text macro="issued"/>
+            <text variable="publisher" suffix=", " />
           </if>
           <else>
-            <text value="[s.n.]"/>
+            <text value="[s.n.]" suffix=", " />
+          </else>
+        </choose>
+        <choose>
+          <if variable="issued">
+            <text macro="issued-year"  />
+          </if>
+          <else>
+            <text value="[s.d.]" />
           </else>
         </choose>
       </if>
       <else>
-        <text value="[s.l: s.n.]"/>
+        <text value="[S.l: s.n., s.d.]" />
       </else>
     </choose>
   </macro>
