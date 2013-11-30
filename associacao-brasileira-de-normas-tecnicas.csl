@@ -82,7 +82,7 @@ tendo as inicias separadas por ponto.-->
             <name-part name="family" text-case="uppercase"/>
             <name-part name="given" text-case="uppercase"/>
           </name>
-          <label form="short" prefix=" (" suffix=".). " text-case="capitalize-first"/>
+          <label form="short" prefix=" (" suffix=".)" text-case="capitalize-first"/>
           <substitute>
             <names variable="editor"/>
             <names variable="collection-editor"/>
@@ -327,10 +327,8 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
       <!--Se for capitulo de livro aparecera o volume "v." e a pagina "p."-->
       <else-if match="any" type="book chapter">
         <group delimiter=", ">
-          <group>
-            <text variable="volume" prefix="v. "/>
-            <text variable="page" prefix="p. "/>
-          </group>
+          <text variable="volume" prefix="v. "/>
+          <text variable="page" prefix="p. "/>
         </group>
       </else-if>
     </choose>
@@ -447,7 +445,7 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
             <!--Dados complementares "pagina, volume"-->
           </group>
         </else-if>
-        <!--Conferencia-->
+        <!--Capítulo-->
         <else-if type="chapter">
           <group>
             <text macro="author" suffix=". "/>
