@@ -127,7 +127,10 @@ aparecera a expess o 'et. al.'. Na regra da ABNT essa expressao deve aparecer em
       <substitute>
         <names variable="editor"/>
         <names variable="translator"/>
-        <text macro="title"/>
+        <!-- "IF" Evita duplicação de títulos em audiovisuais sem autor -->
+        <if match="none" type="motion_picture broadcast">
+          <text macro="title" /> 
+        </if>
       </substitute>
     </names>
   </macro>
