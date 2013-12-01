@@ -376,9 +376,9 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
         </group>
       </else-if>
       <!--Se for capitulo de livro aparecera o volume "v." e a pagina "p."-->
-      <else-if match="any" type="book chapter paper-conference speech" >
+      <else-if match="any" type="book chapter paper-conference speech entry-encyclopedia entry-dictionary" >
         <group delimiter=", ">
-          <text variable="volume" prefix="v. "/>
+          <text variable="volume" prefix="V. "/>
           <text variable="page" prefix="p. "/>
         </group>
       </else-if>
