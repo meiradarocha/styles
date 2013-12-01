@@ -176,7 +176,7 @@ autores, exceto em arquivos do tipo 'artigo de jornal, artigo de revista, artigo
       </if>
       <else-if match="any" type="entry-encyclopedia entry-dictionary">
         <choose>
-          <if match="any" variable="author contributor editor seriesEditor translator">
+          <if match="any" variable="author editor collection-editor translator">
             <text variable="title" text-case="sentence" />
           </if>
           <else>
