@@ -175,7 +175,14 @@ autores, exceto em arquivos do tipo 'artigo de jornal, artigo de revista, artigo
         <text variable="title" text-case="sentence" />
       </if>
       <else-if match="any" type="entry-encyclopedia entry-dictionary">
-        <text variable="title" text-case="uppercase" />
+        <choose>
+          <if match="any" variable="author contributor editor seriesEditor translator">
+            <text variable="title" text-case="sentence" />
+          </if>
+          <else>
+            <text variable="title" text-case="uppercase" />
+          </else>
+        </choose>
       </else-if>
       <else>
         <text variable="title" font-weight="bold" text-case="sentence" />
@@ -608,43 +615,31 @@ em caixa alta. Utiliza-se antes do nome da conferencia a expressao "In". Segundo
             <!--URL, data do acesso-->
           </group>
         </else-if>
-        <!--Texto para Discussao (Verbete de Dicionario)-->
-        <else-if type="entry-dictionary">
-          <group>
-            <text macro="author" suffix=". "/>
+        <!-- Verbete de Enciclopedia ou dicionário -->
+        <else-if  match="any" type="entry-encyclopedia entry-dictionary">
+          <group delimiter=". " suffix=". " >
             <!--Autor-->
-            <text macro="title"/>
+            <text macro="author" />
             <!--Titulo-->
-            <text macro="container-contributors"/>
-            <!--Nomes de editores-->
-            <text macro="secondary-contributors"/>
-            <text macro="container-title"/>
-            <!--Titulo da publicacao-->
-            <text variable="collection-title" prefix=": " suffix=". "/>
-            <text macro="locators"/>
-            <!--Dados complementares "pagina, volume"-->
-            <text macro="event"/>
-            <!--Nome do evento, conferencia-->
-            <text macro="publisher" prefix=". " suffix=". "/>
-            <!--Local, data, etc-->
-            <text macro="collection-title" prefix="(Texto para discussao, n. " suffix=")."/>
-            <text macro="access"/>
-            <!--URL, data do acesso-->
-          </group>
-        </else-if>
-        <!--Nota Tecnica (Verbete de Enciclopedia)-->
-        <else-if type="entry-encyclopedia">
-          <group>
-            <text macro="author" suffix=". "/>
-            <!--Autor-->
-            <text macro="title"/>
-            <!--Titulo-->
-            <text variable="publisher-place" prefix=". " suffix=": "/>
-            <!--Local-->
-            <text variable="publisher" suffix=", "/>
+            <text macro="title" />
+            <group>
+              <!--In:-->
+              <text term="in" font-style="italic" text-case="capitalize-first" suffix=": "/>
+              <group delimiter=". ">
+                <!--Nomes de editores-->
+                <text macro="container-contributors" />
+                <!-- Titulo da enciclopédia -->
+                <text macro="container-title" />
+              </group>
+            </group>
             <!--Editor-->
-            <text macro="issued" prefix=", " suffix=". (Nota técnica)."/>
-            <!--Data-->
+            <text macro="publisher" />
+            <!--Dados complementares "pagina, volume"-->
+            <text macro="locators"/>
+            <!-- URL -->
+            <text macro="access" />
+            <!-- Extra field -->
+            <text macro="extra" />
           </group>
         </else-if>
         <!-- Zotero tipo "Conferência" == tipo CSL "paper-conference"
